@@ -268,6 +268,46 @@
             </button>
         </div>
      </div>
+
+     <!-- JAVASCRIPT -->
+      <script>  
+      //get the elements 3 from html 
+      const inputbox = document.querySelector(".input-box");
+      const inputbutton = document.querySelector(".input-button");
+      const todolist = document.querySelector(".to-do-list");
+
+      //when someone clicks the add task button:
+      inputbutton.addEventListener ('click', function() {
+        let task = inputbox.value.trim(); //gets what the user typed trimmed
+        if (task === "") return; //do nothing if input is empty
+
+        //create the new task row 
+        const taskRow = document.createElement('div');
+        taskRow.classList.add('task-row');
+
+        taskRow.innerHTML = `
+        <label>
+            <input type="checkbox">
+            <span class="custom-box">
+                <div class="checkmark">✔</div>
+            </span>
+            <span class="example-text">${task}</span>
+        </label>
+        <button class="task-remove">
+            <img src="trash.png" alt="Trash Icon">
+        </button>
+    `;
+
+    //put the new task in the todolist
+    todolist.appendChild(taskRow);
+    inputbox.value="";
+    
+
+    });
+
+
+
+      </script>
     
 </body>
 </html>
