@@ -191,16 +191,31 @@
             background-color: rgb(69, 10, 10);
             border: 3px solid rgb(255, 255, 255);
             border-radius: 10px;
+            cursor: pointer;
         }
 
         .checkmark {
-            color: white;
+            opacity: 0;
+            transform: scale(0.6);
+            transition: all 150ms;
             font-size: 40px;
-            
+            color: white;
         }
 
         .custom-box:hover {
             box-shadow: 0 0 10px rgb(45, 82, 9);
+        }
+
+        /* when checkbox is checked, show checkmark */
+        .task-row input[type="checkbox"]:checked + .custom-box .checkmark {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* when checkbox is checked, line-through text */
+        .task-row input[type="checkbox"]:checked + .custom-box + .example-text {
+            text-decoration: line-through;
+            color: rgb(135, 127, 127);
         }
 
         .example-text {
@@ -252,22 +267,7 @@
     <button class="input-button">+</button>
     
     <!-- TO-DO LIST -->
-     <div class="to-do-list"> 
-        <div class="task-row">
-            <label>
-                <input type="checkbox">
-                <span class="custom-box">
-                    <div class="checkmark">
-                        ✔
-                    </div>
-                </span>
-                <span class="example-text">Take out the trash bins</span>
-            </label>
-            <button class="task-remove">
-                <img src="trash.png" alt="Trash Icon">
-            </button>
-        </div>
-     </div>
+     <div class="to-do-list"> <!-- New tasks will be added here dynamically --> </div>
 
      <!-- JAVASCRIPT -->
       <script>  
@@ -275,6 +275,7 @@
       const inputbox = document.querySelector(".input-box");
       const inputbutton = document.querySelector(".input-button");
       const todolist = document.querySelector(".to-do-list");
+      
 
       //when someone clicks the add task button:
       inputbutton.addEventListener ('click', function() {
@@ -301,11 +302,24 @@
     //put the new task in the todolist
     todolist.appendChild(taskRow);
     inputbox.value="";
-    
-
     });
 
+    //do same thing if user presses enter key
+    inputbox.addEventListener('keypress', function(e) {
+    if (e.key === "Enter") {
+        inputbutton.click(); // simulate clicking the button
+    }
+    });
 
+    //delete item logic
+    todolist.addEventListener('click', function(e) {
+        const removeBtn = e.target.closest('.task-remove'); //whatever i clicked on, find the nearest .task-remove parent
+        if (!removeBtn) return;
+
+        const row = removeBtn.closest('.task-row');
+        if (!row) return;
+        row.remove();
+    });
 
       </script>
     
