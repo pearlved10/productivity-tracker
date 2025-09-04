@@ -75,22 +75,28 @@
             height: 270px;
             text-align: center;
 
-            position:absolute;
+            position:relative;
             top: 200px;
             left: 1800px;
             padding-top: 35px;
+            
+        }
 
+        .progress-bar-container {
+            width: 75%;             /* full width of the box */
+            height: 75px;            /* same height as before */
+            background-color: rgb(104, 130, 63); /* color for empty bar */
+            border-radius: 100px;
+            overflow: hidden;        /* prevents the bar from overflowing */
+            margin: 20px auto 0 auto;    /* top, horizontal, bottom */
         }
 
         .progress-bar {
             background-color: rgb(165, 216, 143);
             border-radius: 100px;
-            width: 805px;
-            height: 75px;
-
-            position:absolute;
-            top: 190px;
-            left: 185px;
+            width: 0%;
+            height: 100%;
+            transition: width 0.3s ease;  /* smooth animation when updating */
         }
 
         .input-box { 
@@ -266,9 +272,11 @@
      </div>
 
      <!-- PROGRESS BAR -->
-      <div class="progress-box">
+    <div class="progress-box">
         Progression🌱
-         <div class="progress-bar"></div>
+        <div class="progress-bar-container">
+            <div class="progress-bar"></div>
+        </div>
     </div>
      
     <!-- INPUT BOX -->
@@ -281,6 +289,7 @@
     <!-- TO-DO LIST -->
      <div class="to-do-list"> <!-- New tasks will be added here dynamically --> </div>
 
+
      <!-- JAVASCRIPT -->
       <script>  
       //get the elements 3 from html 
@@ -288,6 +297,14 @@
       const inputbutton = document.querySelector(".input-button");
       const todolist = document.querySelector(".to-do-list");
       const maxtext = 98; //max characters allowed in input box
+      const progressbar = document.querySelector(".progress-bar");
+
+    //checkbox logic
+    todolist.addEventListener('change', function(e) {
+        if (e.target.type === 'checkbox') {
+            updateProgress();
+        }
+    });
       
 
       //when someone clicks the add task button:
@@ -319,7 +336,9 @@
 
     //put the new task in the todolist
     todolist.appendChild(taskRow);
+    updateProgress();
     inputbox.value="";
+    
     });
 
     //do same thing if user presses enter key
@@ -337,7 +356,38 @@
         const row = removeBtn.closest('.task-row');
         if (!row) return;
         row.remove();
+        updateProgress();
+
     });
+
+    //progress bar logic
+    function updateProgress() {
+        // 1) find all task rows (total) and the checked inputs (completed)
+        const rows = todolist.querySelectorAll('.task-row');
+        const total = rows.length;
+
+        // selector finds checkboxes that are currently checked inside .task-row
+        const completed = todolist.querySelectorAll('.task-row input[type="checkbox"]:checked').length;
+
+        // 2) compute percent (guard for zero tasks)
+        let rawPercent;
+
+        if (total === 0) {
+        rawPercent = 0;              // no tasks, progress should be 0
+        } else {
+        rawPercent = (completed / total) * 100;  // percent done
+        }
+
+        // 3) clamp and round the percent so it's a clean 0..100 integer
+        const pct = Math.round(Math.max(0, Math.min(100, rawPercent)));
+
+        // 4) update the visual bar width (percent is relative to the container width)
+        progressbar.style.width = pct + '%';
+
+        // OPTIONAL: update a textual status if you add one to the HTML (see explanation below)
+        const statusEl = document.getElementById('progressStatus');
+        if (statusEl) statusEl.textContent = `${completed} of ${total} tasks — ${pct}%`;
+    }
 
       </script>
     
