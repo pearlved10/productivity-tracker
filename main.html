@@ -292,7 +292,21 @@
 
      <!-- JAVASCRIPT -->
       <script>  
-      //get the elements 3 from html 
+      //date logic
+      const today = new Date();
+
+      const weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+      const months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+
+      const dayEl = document.querySelector('.date-day');
+      const numEl = document.querySelector('.date-num span');
+      const monthEl = document.querySelector('.date-month');
+
+      dayEl.textContent = weekdays[today.getDay()];
+      numEl.textContent = today.getDate();
+      monthEl.textContent = months[today.getMonth()];
+
+      //get the elements 3 from html - input box, button, to-do list logic
       const inputbox = document.querySelector(".input-box");
       const inputbutton = document.querySelector(".input-button");
       const todolist = document.querySelector(".to-do-list");
@@ -383,10 +397,6 @@
 
         // 4) update the visual bar width (percent is relative to the container width)
         progressbar.style.width = pct + '%';
-
-        // OPTIONAL: update a textual status if you add one to the HTML (see explanation below)
-        const statusEl = document.getElementById('progressStatus');
-        if (statusEl) statusEl.textContent = `${completed} of ${total} tasks — ${pct}%`;
     }
 
       </script>
