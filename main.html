@@ -258,6 +258,58 @@
             transform: scale(1.2);
         }
 
+        .pomodoro-title {
+            width: 760px;
+            height: 120px;
+            font-size: 80px;
+            font-family: "Delicious Handrawn", cursive;
+            letter-spacing: 2px;
+            color: rgb(68, 21, 13);
+            background-color: rgba(116, 201, 91, 0.708);
+            border: 8px solid rgb(9, 67, 4);
+            border-radius: 50px;
+            
+            position: absolute;
+            top: 250px;
+            left: 50px;
+            padding-left: 25px;
+            text-align: center;
+            padding-top: 20px;
+        }
+
+        .pomodoro-widget {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 50px;
+            width: 800px;
+            height: 650px;
+            box-shadow: 0 0 80px rgb(194, 235, 148);
+            border: 7px solid rgba(49, 88, 49, 0.678);
+            border-radius: 60px;
+
+            position: absolute;
+            top: 450px;
+            left: 50px;
+            padding-top: 30px;
+        }
+
+        .pomodoro-start-button {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 300px;
+            height: 100px;
+            font-size: 50px;
+            color: rgb(255, 254, 253);
+            background-color: rgb(15, 34, 2);
+            margin-bottom: 20px;
+           
+            border-radius: 30px;  
+          
+            cursor: pointer; /* changes cursor to hand, looks more clickable */
+        }
+
         
     </style>
 
@@ -288,6 +340,15 @@
     
     <!-- TO-DO LIST -->
      <div class="to-do-list"> <!-- New tasks will be added here dynamically --> </div>
+
+    <! -- POMODORO TIMER TITLE -->
+    <div class="pomodoro-title"> Pomodoro Timer! </div>
+
+    <!--POMODORO TIMER WIDGET-->
+    <div class="pomodoro-widget">
+        <img src="timer.gif" alr="Pomodoro Timer Gif" width="400px" height="400px">
+        <div class="pomodoro-start-button"> START </div>
+    </div>"
 
 
      <!-- JAVASCRIPT -->
