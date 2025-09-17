@@ -1,473 +1,605 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>To-Do List</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Delicious+Handrawn&family=Shadows+Into+Light&display=swap" rel="stylesheet">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>To-Do List</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Delicious+Handrawn&family=Shadows+Into+Light&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flipclock@0.7.8/dist/flipclock.min.css">
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- ADD THIS -->
+        <script src="https://cdn.jsdelivr.net/npm/flipclock@0.7.8/dist/flipclock.min.js"></script>
 
-    <style>
+        <style>
 
-        body {
-            margin: 0;
-            padding: 0;
-            height: 100vh;       
-            font-family: "Delicious Handrawn", cursive;
-            background: linear-gradient(135deg,#c4e492,rgb(78, 126, 23));
-            overflow: hidden;      /* prevents scrolling */
-            background-image: url(notebook.jpg);
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-        }
+            body {
+                margin: 0;
+                padding: 0;
+                height: 100vh;       
+                font-family: "Delicious Handrawn", cursive;
+                background: linear-gradient(135deg,#c4e492,rgb(78, 126, 23));
+                overflow: hidden;      /* prevents scrolling */
+                background-image: url(notebook.jpg);
+                background-size: cover;
+                background-position: center;
+                background-repeat: no-repeat;
+            }
 
-        .date-box {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            gap: 40px;
-            align-items: center;
+            .date-box {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                gap: 40px;
+                align-items: center;
+            
+                background-color: #514620;
+                color: white;
+                border: 8px solid rgb(43, 68, 12);
+                border-radius: 13%;
+                width: 600px;
+                height: 600px;
+                text-align: center;
+
+                position:absolute;
+                top: 170px;
+                left: 600px;
+            }
+
+            .date-day {
+                font-size: 80px;
+            }
+
+            .date-month {
+                font-size: 60px;
+            }
+
+            .date-num {
+                width: 220px;
+                height: 220px;
+                border: 2px solid white;
+                border-radius: 50%;
+                font-size: 11.8em;
+                background-color: #67923f;
+
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+            }
+
+            span {
+                transform: translateY(-20px);
+            }
+
+            .progress-box {
+                background-color: rgb(45, 99, 21);
+                color: white;
+                font-size: 4.9em;
+                border: 8px solid rgb(43, 68, 12);
+                border-radius: 75px;
+                width: 1200px;
+                height: 270px;
+                text-align: center;
+
+                position:relative;
+                top: 200px;
+                left: 1940px;
+                padding-top: 35px;
+                
+            }
+
+            .progress-bar-container {
+                width: 75%;             /* full width of the box */
+                height: 75px;            /* same height as before */
+                background-color: rgb(104, 130, 63); /* color for empty bar */
+                border-radius: 100px;
+                overflow: hidden;        /* prevents the bar from overflowing */
+                margin: 20px auto 0 auto;    /* top, horizontal, bottom */
+            }
+
+            .progress-bar {
+                background-color: rgb(165, 216, 143);
+                border-radius: 100px;
+                width: 0%;
+                height: 100%;
+                transition: width 0.3s ease;  /* smooth animation when updating */
+            }
+
+            .input-box { 
+                width: 1000px;
+                height: 120px;
+                font-size: 60px;
+                font-family: "Delicious Handrawn", cursive;
+                letter-spacing: 2px;
+                color: rgb(68, 21, 13);
+                background-color: rgba(173, 198, 158, 0.598);
+                
+                position: absolute;
+                top: 600px;
+                left: 1940px;
+                padding-left: 25px;
+
+                outline: none; /* removes default black/blue border */
+                border: 6px solid rgb(175, 171, 110);
+                border-radius: 100px;     
+            }
+
+            .input-box::placeholder {
+                color:rgb(160, 157, 157);
+            }
+
+            .input-button {
+                width: 130px;
+                height: 130px;
+                font-size: 105px;
+                color: rgb(255, 254, 253);
+                background-color: rgb(15, 34, 2);
+                margin-bottom: 200px;
+
+                position: absolute;
+                top: 600px;
+                left: 3015px;
+
+            
+                border-radius: 30px;  
+            
+                cursor: pointer; /* changes cursor to hand, looks more clickable */
+                
+
+            }
+
+            .to-do-list {
+                display: flex;
+                flex-direction: column;
+                gap: 20px;
+                width: 31%;
+                height: 47%;
+                box-shadow: 0 0 80px rgb(194, 235, 148);
+                border: 7px solid rgba(49, 88, 49, 0.678);
+                border-radius: 60px;
+
+                position: absolute;
+                top: 840px;
+                left: 1955px;
+                padding-top: 30px;
+                overflow-y: auto;
+                scroll-behavior: smooth;
+                scrollbar-width: none;
+                padding-right: 10px;
+            }
+            
+            .to-do-list::-webkit-scrollbar {
+                display:none;
+            }
+
+            .task-row {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                width: 90%;
+                height: 10%;
+                margin: 0 auto;
+                padding: 10px;
+                
+                background-color: rgba(187, 215, 170, 0.664);
+                border-radius: 40px;
+            }
+
+            .task-row input {
+                width: 40px;
+                height: 40px;
+                
+            }
+
+            .task-row input[type="checkbox"] {
+                display: none; /* hide the native checkbox */
+            }
+
+            .task-row label {
+                display: flex;
+                align-items: center;
+                gap: 40px; /* spacing between custom box and text */
+                padding-top: 35px;
+                padding-left: 15px;
+            }
+
+            .custom-box {
+                width: 55px;          /* fixed width */
+                height: 55px;         /* fixed height */
+                min-width: 55px;      /* prevent shrinking */
+                min-height: 55px;     /* prevent shrinking */
+                max-width: 55px;      /* prevent growing */
+                max-height: 55px;     /* prevent growing */
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background-color: rgb(69, 10, 10);
+                border: 3px solid white;
+                border-radius: 10px;
+                cursor: pointer;
+                flex-shrink: 0;       /* don't let flexbox shrink it */
+                    }
+
+            .checkmark {
+                opacity: 0;
+                transform: scale(0.6);
+                transition: all 150ms;
+                font-size: 40px;
+                color: white;
+            }
+
+            .custom-box:hover {
+                box-shadow: 0 0 10px rgb(45, 82, 9);
+            }
+
+            /* when checkbox is checked, show checkmark */
+            .task-row input[type="checkbox"]:checked + .custom-box .checkmark {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+            /* when checkbox is checked, line-through text */
+            .task-row input[type="checkbox"]:checked + .custom-box + .example-text {
+                text-decoration: line-through;
+                color: rgb(135, 127, 127);
+            }
+
+            .example-text {
+                font-size: 50px;
+                letter-spacing: 3px;
+                color: rgb(17, 61, 8);
+                word-break: break-word;
+                overflow-wrap:  break-word;
+                max-width: 100%;   /* make sure text stays within container */
+            }
+
+            .task-remove {
+                background-color: transparent;
+                border: transparent;
+                cursor: pointer;
+                padding-right: 20px;
+            }
+
+            .task-remove img {
+                width: 80px;
+                height: 80px;
+            }
+
+            .task-remove:hover img {
+                transform: scale(1.2);
+            }
+
+            /* Pomodoro Timer Title */
+            .pomodoro-title {
+                width: 760px;
+                height: 120px;
+                font-size: 80px;
+                font-family: "Delicious Handrawn", cursive;
+                letter-spacing: 2px;
+                color: rgb(68, 21, 13);
+                background-color: rgba(116, 201, 91, 0.708);
+                border: 8px solid rgb(9, 67, 4);
+                border-radius: 50px;
+                
+                position: absolute;
+                top: 990px;
+                left: 800px;
+                padding-left: 25px;
+                text-align: center;
+                padding-top: 20px;
+            }
+
+            
+            .pomodoro-widget {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 50px;
+                width: 800px;
+                height: 650px;
+                box-shadow: 0 0 80px rgb(194, 235, 148);
+                border: 7px solid rgba(49, 88, 49, 0.678);
+                border-radius: 60px;
+
+                position: absolute;
+                top: 1200px;
+                left: 800px;
+                padding-top: 30px;
+            }
+
+            /* GIF inside Pomodoro Widget */
+            .pomodoro-widget img {
+                width: 400px;
+                height: 400px;
+            }
+
+            .pomodoro-buttons {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                gap: 30px;
+                margin-top: -20px;   /* shift buttons up closer to GIF / countdown */
+            }
+
+            /* Play / Pause / Replay Buttons */
+            .pomodoro-buttons button {
+                width: 120px;
+                height: 120px;
+                font-size: 50px;
+                color: rgb(255, 254, 253);
+                background-color: rgb(15, 34, 2);
+                border: none;
+                border-radius: 30px;
+                cursor: pointer;
+                transition: transform 0.2s;
+            }
+
+            .pomodoro-buttons button:hover {
+                transform: scale(1.1); /* simple hover effect */
+            }
+
+            .pomodoro-countdown {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%); /* center inside the widget */
+            }
+
+            .pomodoro-gif {
+                width: 400px;
+                height: 400px;
+                transition: opacity 0.5s;
+                margin-top: 20px;
+            }
+
+            .pomodoro-flipclock {
+                width: 300px;
+                margin-top: 15px;
+                display: block; /* was previously 'none' */
+            }
+
+            .flip-clock-wrapper {
+                background: transparent !important; /* remove default background */
+            }
+
+            .flip-clock-wrapper ul li a div div.inn {
+                background-color: #67923f;   /* light green background */
+                color: #ffffff;              /* white digits */
+            }
+
+            .flip-clock-wrapper ul li a div div {
+                border-radius: 10px;         /* round corners */
+            }
+
+            .flip-clock-wrapper ul li.separator div {
+                background-color: transparent;
+                color: #ffffff;              /* colons color */
+            }
+
+            
+        </style>
+
+    </head>
+
+    <body>
+        <!-- DATE BOX -->
+        <div class="date-box">
+            <div class="date-day">Saturday</div>
+            <div class="date-num"><span>23</span></div>
+            <div class="date-month">August</div>
+        </div>
+
+        <!-- PROGRESS BAR -->
+        <div class="progress-box">
+            Progression🌱
+            <div class="progress-bar-container">
+                <div class="progress-bar"></div>
+            </div>
+        </div>
         
-            background-color: #514620;
-            color: white;
-            border: 8px solid rgb(43, 68, 12);
-            border-radius: 13%;
-            width: 600px;
-            height: 600px;
-            text-align: center;
+        <!-- INPUT BOX -->
+        <input class="input-box" type="text" placeholder="Write your task here...">
 
-            position:absolute;
-            top: 170px;
-            left: 600px;
-        }
-
-        .date-day {
-            font-size: 80px;
-        }
-
-        .date-month {
-            font-size: 60px;
-        }
-
-        .date-num {
-            width: 220px;
-            height: 220px;
-            border: 2px solid white;
-            border-radius: 50%;
-            font-size: 11.8em;
-            background-color: #67923f;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-        }
-
-        span {
-            transform: translateY(-20px);
-        }
-
-        .progress-box {
-            background-color: rgb(45, 99, 21);
-            color: white;
-            font-size: 4.9em;
-            border: 8px solid rgb(43, 68, 12);
-            border-radius: 75px;
-            width: 1200px;
-            height: 270px;
-            text-align: center;
-
-            position:relative;
-            top: 200px;
-            left: 1930px;
-            padding-top: 35px;
             
-        }
-
-        .progress-bar-container {
-            width: 75%;             /* full width of the box */
-            height: 75px;            /* same height as before */
-            background-color: rgb(104, 130, 63); /* color for empty bar */
-            border-radius: 100px;
-            overflow: hidden;        /* prevents the bar from overflowing */
-            margin: 20px auto 0 auto;    /* top, horizontal, bottom */
-        }
-
-        .progress-bar {
-            background-color: rgb(165, 216, 143);
-            border-radius: 100px;
-            width: 0%;
-            height: 100%;
-            transition: width 0.3s ease;  /* smooth animation when updating */
-        }
-
-        .input-box { 
-            width: 1000px;
-            height: 120px;
-            font-size: 60px;
-            font-family: "Delicious Handrawn", cursive;
-            letter-spacing: 2px;
-            color: rgb(68, 21, 13);
-            background-color: rgba(173, 198, 158, 0.598);
-            
-            position: absolute;
-            top: 600px;
-            left: 1920px;
-            padding-left: 25px;
-
-            outline: none; /* removes default black/blue border */
-            border: 6px solid rgb(175, 171, 110);
-            border-radius: 100px;     
-        }
-
-        .input-box::placeholder {
-            color:rgb(160, 157, 157);
-        }
-
-        .input-button {
-            width: 130px;
-            height: 130px;
-            font-size: 105px;
-            color: rgb(255, 254, 253);
-            background-color: rgb(15, 34, 2);
-            margin-bottom: 200px;
-
-            position: absolute;
-            top: 600px;
-            left: 3000px;
-
-           
-            border-radius: 30px;  
-          
-            cursor: pointer; /* changes cursor to hand, looks more clickable */
-            
-
-        }
-
-        .to-do-list {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            width: 32%;
-            height: 50%;
-            box-shadow: 0 0 80px rgb(194, 235, 148);
-            border: 7px solid rgba(49, 88, 49, 0.678);
-            border-radius: 60px;
-
-            position: absolute;
-            top: 840px;
-            left: 1913px;
-            padding-top: 30px;
-            overflow-y: auto;
-            scroll-behavior: smooth;
-            scrollbar-width: none;
-            padding-right: 10px;
-        }
+        <!-- INPUT BUTTON -->
+        <button class="input-button">+</button>
         
-        .to-do-list::-webkit-scrollbar {
-            display:none;
-        }
+        <!-- TO-DO LIST -->
+        <div class="to-do-list"> <!-- New tasks will be added here dynamically --> </div>
 
-        .task-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 90%;
-            height: 10%;
-            margin: 0 auto;
-            padding: 10px;
-            
-            background-color: rgba(187, 215, 170, 0.664);
-            border-radius: 40px;
-        }
+        <!-- POMODORO TIMER TITLE -->
+        <div class="pomodoro-title"> Pomodoro Timer! </div>
 
-        .task-row input {
-            width: 40px;
-            height: 40px;
-            
-        }
+        <!-- POMODORO TIMER WIDGET -->
+        <div class="pomodoro-widget">
+            <img src="timer.gif" alt="Pomodoro Timer Gif" class="pomodoro-gif">
+            <div class="pomodoro-countdown"></div>
+            <div class="pomodoro-buttons">
+                <button class="pom-play">▶</button>
+                <button class="pom-pause">⏸</button>
+                <button class="pom-replay">⟲</button>
+            </div>
+        </div>
 
-        .task-row input[type="checkbox"] {
-            display: none; /* hide the native checkbox */
-        }
+        <!-- JAVASCRIPT -->
+        <script>  
+            // ======================
+            // DATE LOGIC
+            // ======================
+            const today = new Date();
+            const weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+            const months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
 
-        .task-row label {
-            display: flex;
-            align-items: center;
-            gap: 40px; /* spacing between custom box and text */
-            padding-top: 35px;
-            padding-left: 15px;
-        }
+            const dayEl = document.querySelector('.date-day');
+            const numEl = document.querySelector('.date-num span');
+            const monthEl = document.querySelector('.date-month');
 
-        .custom-box {
-            width: 55px;          /* fixed width */
-            height: 55px;         /* fixed height */
-            min-width: 55px;      /* prevent shrinking */
-            min-height: 55px;     /* prevent shrinking */
-            max-width: 55px;      /* prevent growing */
-            max-height: 55px;     /* prevent growing */
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: rgb(69, 10, 10);
-            border: 3px solid white;
-            border-radius: 10px;
-            cursor: pointer;
-            flex-shrink: 0;       /* don't let flexbox shrink it */
+            dayEl.textContent = weekdays[today.getDay()];
+            numEl.textContent = today.getDate();
+            monthEl.textContent = months[today.getMonth()];
+
+            // ======================
+            // TO-DO LIST LOGIC
+            // ======================
+            const inputbox = document.querySelector(".input-box");
+            const inputbutton = document.querySelector(".input-button");
+            const todolist = document.querySelector(".to-do-list");
+            const maxtext = 80; //max characters allowed in input box
+            const progressbar = document.querySelector(".progress-bar");
+
+            // Checkbox logic
+            todolist.addEventListener('change', function(e) {
+                if (e.target.type === 'checkbox') {
+                    updateProgress();
+                }
+            });
+
+            // Add task button
+            inputbutton.addEventListener('click', function() {
+                let task = inputbox.value.trim();
+                if (task === "") return;
+
+                if (task.length > maxtext) {
+                    alert("Task is too long! Please limit to 80 characters.");
+                    return;
                 }
 
-        .checkmark {
-            opacity: 0;
-            transform: scale(0.6);
-            transition: all 150ms;
-            font-size: 40px;
-            color: white;
-        }
+                const taskRow = document.createElement('div');
+                taskRow.classList.add('task-row');
 
-        .custom-box:hover {
-            box-shadow: 0 0 10px rgb(45, 82, 9);
-        }
+                taskRow.innerHTML = `
+                    <label>
+                        <input type="checkbox">
+                        <span class="custom-box">
+                            <div class="checkmark">✔</div>
+                        </span>
+                        <span class="example-text">${task}</span>
+                    </label>
+                    <button class="task-remove">
+                        <img src="trash.png" alt="Trash Icon">
+                    </button>
+                `;
 
-        /* when checkbox is checked, show checkmark */
-        .task-row input[type="checkbox"]:checked + .custom-box .checkmark {
-            opacity: 1;
-            transform: scale(1);
-        }
+                todolist.appendChild(taskRow);
+                updateProgress();
+                inputbox.value="";
+            });
 
-        /* when checkbox is checked, line-through text */
-        .task-row input[type="checkbox"]:checked + .custom-box + .example-text {
-            text-decoration: line-through;
-            color: rgb(135, 127, 127);
-        }
+            // Enter key to add task
+            inputbox.addEventListener('keypress', function(e) {
+                if (e.key === "Enter") {
+                    inputbutton.click();
+                }
+            });
 
-        .example-text {
-            font-size: 50px;
-            letter-spacing: 3px;
-            color: rgb(17, 61, 8);
-            word-break: break-word;
-            overflow-wrap:  break-word;
-            max-width: 100%;   /* make sure text stays within container */
-        }
+            // Delete task
+            todolist.addEventListener('click', function(e) {
+                const removeBtn = e.target.closest('.task-remove');
+                if (!removeBtn) return;
 
-        .task-remove {
-            background-color: transparent;
-            border: transparent;
-            cursor: pointer;
-            padding-right: 20px;
-        }
+                const row = removeBtn.closest('.task-row');
+                if (!row) return;
+                row.remove();
+                updateProgress();
+            });
 
-        .task-remove img {
-            width: 80px;
-            height: 80px;
-        }
+            // Progress bar logic
+            function updateProgress() {
+                const rows = todolist.querySelectorAll('.task-row');
+                const total = rows.length;
+                const completed = todolist.querySelectorAll('.task-row input[type="checkbox"]:checked').length;
+                let rawPercent = total === 0 ? 0 : (completed / total) * 100;
+                const pct = Math.round(Math.max(0, Math.min(100, rawPercent)));
+                progressbar.style.width = pct + '%';
+            }
 
-        .task-remove:hover img {
-            transform: scale(1.2);
-        }
+            // ======================
+            // POMODORO TIMER LOGIC
+            // ======================
+            const gifEl = document.querySelector('.pomodoro-gif');
+            const countdownEl = document.querySelector('.pomodoro-countdown');
+            const playBtn = document.querySelector('.pom-play');
+            const pauseBtn = document.querySelector('.pom-pause');
+            const replayBtn = document.querySelector('.pom-replay');
 
-        .pomodoro-title {
-            width: 760px;
-            height: 120px;
-            font-size: 80px;
-            font-family: "Delicious Handrawn", cursive;
-            letter-spacing: 2px;
-            color: rgb(68, 21, 13);
-            background-color: #4d5622ec;
-            border: 8px solid rgb(9, 67, 4);
-            border-radius: 50px;
-            
-            position: absolute;
-            top: 990px;
-            left: 800px;
-            padding-left: 25px;
-            text-align: center;
-            padding-top: 20px;
-        }
+            let totalSeconds = 25 * 60; // 25 min
+            let remainingSeconds = totalSeconds;
+            let timerInterval = null;
 
-        .pomodoro-widget {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 50px;
-            width: 800px;
-            height: 650px;
-            
+            let timerRunning = false;  // is the timer currently running?
+            let timerFinished = false; // has the timer completed?
 
-            position: absolute;
-            top: 1200px;
-            left: 800px;
-            padding-top: 30px;
-        }
+            // Format mm:ss
+            function formatTime(sec) {
+                const m = Math.floor(sec / 60).toString().padStart(2, '0');
+                const s = (sec % 60).toString().padStart(2, '0');
+                return `${m}:${s}`;
+            }
 
-        .pomodoro-start-button {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 300px;
-            height: 100px;
-            font-size: 50px;
-            color: rgb(255, 254, 253);
-            background-color: rgb(15, 34, 2);
-            margin-bottom: 20px;
-           
-            border-radius: 30px;  
-          
-            cursor: pointer; /* changes cursor to hand, looks more clickable */
-        }
+            // Update countdown display
+            function updateCountdown() {
+                countdownEl.textContent = formatTime(remainingSeconds);
+            }
 
-        
-    </style>
+            // Start timer
+            function startTimer() {
+                if (timerRunning) return; // do nothing if already running
 
-</head>
+                timerRunning = true;
+                timerFinished = false;
 
-<body>
-    <!-- DATE BOX -->
-     <div class="date-box">
-        <div class="date-day">Saturday</div>
-        <div class="date-num"><span>23</span></div>
-        <div class="date-month">August</div>
-     </div>
+                gifEl.style.opacity = 0;          // fade out GIF
+                countdownEl.style.display = "block";
+                updateCountdown();
 
-     <!-- PROGRESS BAR -->
-    <div class="progress-box">
-        Progression🌱
-        <div class="progress-bar-container">
-            <div class="progress-bar"></div>
-        </div>
-    </div>
-     
-    <!-- INPUT BOX -->
-    <input class="input-box" type="text" placeholder="Write your task here...">
+                timerInterval = setInterval(() => {
+                    remainingSeconds--;
+                    updateCountdown();
 
-        
-     <!-- INPUT BUTTON -->
-    <button class="input-button">+</button>
-    
-    <!-- TO-DO LIST -->
-     <div class="to-do-list"> <!-- New tasks will be added here dynamically --> </div>
+                    if (remainingSeconds <= 0) {
+                        clearInterval(timerInterval);
+                        timerInterval = null;
+                        timerRunning = false;
+                        timerFinished = true;
+                        remainingSeconds = totalSeconds;
 
-    <! -- POMODORO TIMER TITLE -->
-    <div class="pomodoro-title"> Pomodoro Timer! </div>
+                        countdownEl.style.display = "none";
+                        gifEl.style.opacity = 1;
 
-    <!--POMODORO TIMER WIDGET-->
-    <div class="pomodoro-widget">
-        <img src="timer.gif" alr="Pomodoro Timer Gif" width="400px" height="400px">
-        <div class="pomodoro-start-button"> START </div>
-    </div>"
+                        console.log("Pomodoro Done!");
+                    }
+                }, 1000);
+            }
 
+            // Pause timer
+            function pauseTimer() {
+                if (!timerRunning) return; // only pause if timer is running
 
-     <!-- JAVASCRIPT -->
-      <script>  
-      //date logic
-      const today = new Date();
+                clearInterval(timerInterval);
+                timerInterval = null;
+                timerRunning = false;
+            }
 
-      const weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-      const months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+            // Replay timer
+            function replayTimer() {
+                if (!timerRunning && !timerFinished) return; // only allow replay if timer started or finished
 
-      const dayEl = document.querySelector('.date-day');
-      const numEl = document.querySelector('.date-num span');
-      const monthEl = document.querySelector('.date-month');
+                clearInterval(timerInterval);
+                timerInterval = null;
+                remainingSeconds = totalSeconds;
+                updateCountdown();
+                countdownEl.style.display = "block";
+                gifEl.style.opacity = 0;
+                timerRunning = false;
+                timerFinished = false;
+            }
 
-      dayEl.textContent = weekdays[today.getDay()];
-      numEl.textContent = today.getDate();
-      monthEl.textContent = months[today.getMonth()];
+            // Attach Pomodoro button events
+            playBtn.addEventListener('click', startTimer);
+            pauseBtn.addEventListener('click', pauseTimer);
+            replayBtn.addEventListener('click', replayTimer);
 
-      //get the elements 3 from html - input box, button, to-do list logic
-      const inputbox = document.querySelector(".input-box");
-      const inputbutton = document.querySelector(".input-button");
-      const todolist = document.querySelector(".to-do-list");
-      const maxtext = 80; //max characters allowed in input box
-      const progressbar = document.querySelector(".progress-bar");
-
-    //checkbox logic
-    todolist.addEventListener('change', function(e) {
-        if (e.target.type === 'checkbox') {
-            updateProgress();
-        }
-    });
-      
-
-      //when someone clicks the add task button:
-      inputbutton.addEventListener ('click', function() {
-        let task = inputbox.value.trim(); //gets what the user typed trimmed
-        if (task === "") return; //do nothing if input is empty
-
-        if (task.length > maxtext) {
-            alert("Task is too long! Please limit to 80 characters.");
-            return;
-        }
-
-        //create the new task row 
-        const taskRow = document.createElement('div');
-        taskRow.classList.add('task-row');
-
-        taskRow.innerHTML = `
-        <label>
-            <input type="checkbox">
-            <span class="custom-box">
-                <div class="checkmark">✔</div>
-            </span>
-            <span class="example-text">${task}</span>
-        </label>
-        <button class="task-remove">
-            <img src="trash.png" alt="Trash Icon">
-        </button>
-    `;
-
-    //put the new task in the todolist
-    todolist.appendChild(taskRow);
-    updateProgress();
-    inputbox.value="";
-    
-    });
-
-    //do same thing if user presses enter key
-    inputbox.addEventListener('keypress', function(e) {
-    if (e.key === "Enter") {
-        inputbutton.click(); // simulate clicking the button
-    }
-    });
-
-    //delete item logic
-    todolist.addEventListener('click', function(e) {
-        const removeBtn = e.target.closest('.task-remove'); //whatever i clicked on, find the nearest .task-remove parent
-        if (!removeBtn) return;
-
-        const row = removeBtn.closest('.task-row');
-        if (!row) return;
-        row.remove();
-        updateProgress();
-
-    });
-
-    //progress bar logic
-    function updateProgress() {
-        // 1) find all task rows (total) and the checked inputs (completed)
-        const rows = todolist.querySelectorAll('.task-row');
-        const total = rows.length;
-
-        // selector finds checkboxes that are currently checked inside .task-row
-        const completed = todolist.querySelectorAll('.task-row input[type="checkbox"]:checked').length;
-
-        // 2) compute percent (guard for zero tasks)
-        let rawPercent;
-
-        if (total === 0) {
-        rawPercent = 0;              // no tasks, progress should be 0
-        } else {
-        rawPercent = (completed / total) * 100;  // percent done
-        }
-
-        // 3) clamp and round the percent so it's a clean 0..100 integer
-        const pct = Math.round(Math.max(0, Math.min(100, rawPercent)));
-
-        // 4) update the visual bar width (percent is relative to the container width)
-        progressbar.style.width = pct + '%';
-    }
-
-      </script>
-    
-</body>
+        </script>
+    </body>
 </html>
